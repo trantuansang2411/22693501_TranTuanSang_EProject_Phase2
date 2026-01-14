@@ -32,6 +32,11 @@ class App {
   }
 
   setRoutes() {
+    // Health check endpoint
+    this.app.get("/health", (req, res) => {
+      res.status(200).json({ status: "ok", service: "auth" });
+    });
+
     this.app.use("/", AuthRoutes);
   }
 

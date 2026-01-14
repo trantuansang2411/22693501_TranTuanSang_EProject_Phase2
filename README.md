@@ -1,13 +1,51 @@
-# Docker Test V4 - CI/CD Testing
+# Microservices E-Commerce Project
 
 ## Overview
-This project implements a microservices architecture with automated testing using GitHub Actions CI/CD.
+This project implements a microservices architecture with multiple deployment options:
+- **Docker Compose**: Quick local development
+- **Kubernetes (Kind)**: Production-like local environment with orchestration
+- **CI/CD**: Automated testing with GitHub Actions
 
 ## Services
 - **Auth Service** (Port 3000): User authentication and authorization
 - **Product Service** (Port 3001): Product management and order creation
-- **Order Service** (Port 3002): Order processing (if used)
-- **API Gateway** (Port 8080): Request routing and load balancing
+- **Order Service** (Port 3002): Order processing and message queue consumption
+- **API Gateway** (Port 3003): Request routing and load balancing
+- **MongoDB**: NoSQL database for all services
+- **RabbitMQ**: Message broker for inter-service communication
+
+## Deployment Options
+
+### 🚀 Quick Start - Docker Compose
+```powershell
+# Start all services
+docker compose up -d
+
+# Stop all services
+docker compose down
+```
+
+See [DOCKER_CICD_SETUP.md](DOCKER_CICD_SETUP.md) for detailed setup.
+
+### ☸️ Kubernetes with Kind (Recommended for Production-like Testing)
+```powershell
+# Automated deployment
+.\deploy-k8s.ps1
+
+# Manual deployment
+kind create cluster --config=kind-config.yaml
+kubectl apply -f k8s/
+```
+
+**Features:**
+- ✅ 2-node cluster (1 control-plane + 1 worker)
+- ✅ High availability with multiple replicas
+- ✅ Health checks and auto-restart
+- ✅ Resource limits and requests
+- ✅ ConfigMaps and Secrets management
+- ✅ Persistent storage for MongoDB and RabbitMQ
+
+See **[KUBERNETES_SETUP.md](KUBERNETES_SETUP.md)** for comprehensive guide or **[QUICK_START_K8S.md](QUICK_START_K8S.md)** for quick start.
 
 ## Testing
 

@@ -32,18 +32,23 @@ class App {
   }
 
   setRoutes() {
+    // Health check endpoint
+    this.app.get("/health", (req, res) => {
+      res.status(200).json({ status: "ok", service: "product" });
+    });
+
     this.app.use("/", productsRouter);
   }
 
- async setupMessageBroker() {
-  try {
-    await MessageBroker.connect(); // Có retry built-in
-    console.log("Message broker setup completed");
-  } catch (error) {
-    console.error("Failed to setup message broker:", error.message);
-    // App có thể chạy mà không có message broker
+  async setupMessageBroker() {
+    try {
+      await MessageBroker.connect(); // Có retry built-in
+      console.log("Message broker setup completed");
+    } catch (error) {
+      console.error("Failed to setup message broker:", error.message);
+      // App có thể chạy mà không có message broker
+    }
   }
-}
   start() {
     this.server = this.app.listen(config.port, () =>
       console.log(`Server started on port ${config.port}`)

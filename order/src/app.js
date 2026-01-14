@@ -25,24 +25,29 @@ class App {
     await mongoose.disconnect();
     console.log("MongoDB disconnected");
   }
-   setMiddlewares() {
+  setMiddlewares() {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
   }
 
   setRoutes() {
+    // Health check endpoint
+    this.app.get("/health", (req, res) => {
+      res.status(200).json({ status: "ok", service: "order" });
+    });
+
     this.app.use("/", orderRoutes);
   }
 
-  
-// set up the message broker to consume messages from the orders queue
+
+  // set up the message broker to consume messages from the orders queue
   async setupOrderConsumer() {
     try {
       await messageBroker.connect();
-      
+
       // Set up order processing callback
       const orderService = new OrderService();
-      
+
       messageBroker.consumeOrderMessages(async (orderData) => {
         try {
           console.log("Processing order:", orderData);
